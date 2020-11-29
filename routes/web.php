@@ -13,10 +13,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Auth::routes();
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::group(['middleware' => ['auth']],
+    function () {
+        Route::get('/home', 'HomeController@index')->name('home');
+        Route::get('/game', 'GameController@index')->name('game');
+        Route::get('/start', 'GameController@start')->name('start');
+        Route::get('/records', 'RecordController@records')->name('record');
+        Route::post('/user-record', 'GameController@updateUserRecord')->name('update.user.record');
 
-Route::get('/home', 'HomeController@index')->name('home');
+    });
+
+                //admin block
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'namespace' => 'Admin', 'as' => 'admin.'],
+    function () {
+        Route::get('/', 'HomeController@index')->name('home');
+        Route::get('/questions', 'QuestionController@index')->name('questions.index');
+        Route::get('/questions/create', 'QuestionController@create')->name('questions.create');
+        Route::post('/questions', 'QuestionController@store')->name('questions.store');
+        Route::get('/questions/edit/{id}', 'QuestionController@edit')->name('questions.edit');
+        Route::put('/questions/{id}', 'QuestionController@update')->name('questions.update');
+        Route::delete('/questions/{id}', 'QuestionController@delete')->name('questions.delete');
+    });
+
