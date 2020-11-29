@@ -1,0 +1,30 @@
+/* your styles go here */
+
+/*.side-navbar ul :not(collapsed) .arrow:before,*/
+/*.side-navbar li :not(collapsed) .arrow:before {*/
+    /*font-family: FontAwesome;*/
+    /*content: "\f078";*/
+    /*display: inline-block;*/
+    /*padding-left: 10px;*/
+    /*padding-right: 10px;*/
+    /*vertical-align: middle;*/
+    /*float: right;*/
+/*}*/
+
+.side-navbar {
+    width: 250px;
+}
+
+table {
+    counter-reset: rowNumber;
+}
+
+table tr {
+    counter-increment: rowNumber;
+}
+
+table tr td:first-child::before {
+    content: counter(rowNumber);
+    min-width: 1em;
+    margin-right: 0.5em;
+}
